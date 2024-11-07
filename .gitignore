@@ -1,0 +1,6 @@
+*.zip
+*.csv
+*.pickle
+Offline\ 2/Adult/
+Offline\ 3/FashionMNIST/
+Offline/ 3/*.pickle

@@ -1,0 +1,77 @@
+third_df_file_path = "WA_Fn-UseC_-Telco-Customer-Churn.csv"
+df_third_dataset = pd.read_csv(third_df_file_path)
+df = df_third_dataset.copy(deep=True)
+df.head()
+
+
+df.drop('customerID', axis=1, inplace=True)
+df.dtypes
+
+
+df.drop_duplicates(inplace=True)
+
+
+df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
+df['TotalCharges'].fillna(df['TotalCharges'].mean(), inplace=True)
+df['TotalCharges'] = df['TotalCharges'].astype('float64')
+
+# Verify the conversion and filling
+df['TotalCharges'].isna().sum()
+
+
+
+print(f'Null values in each column:\n{df.isna().sum()}')
+print(f"duplicated rows: {df.duplicated().sum()}")
+
+
+
+# Convert all object types into category types
+object_columns = df.select_dtypes(include=['object']).columns
+for column in object_columns:
+    df[column] = df[column].astype('category')
+
+# Verify the conversion
+df.dtypes
+
+
+
+
+# Label encode the target column 'Churn' in the third dataset
+df['Churn'] = label_encoder.fit_transform(df['Churn'])
+
+# Verify the encoding
+df['Churn'].value_counts()
+
+
+
+for column in df.columns:
+    print(f"Unique values and counts for {column}:")
+    print(df[column].value_counts())
+    print("\n")
+
+
+
+feature_col = 'Churn'
+for col in df.select_dtypes(include=['category']).columns:
+    if col != feature_col and df[col].nunique() == 2:
+
+        df[col] = label_encoder.fit_transform(df[col])
+
+df.dtypes
+
+df = pd.get_dummies(df).astype('float64')
+
+
+
+for column in df.columns:
+    print(f"Unique values and counts for {column}:")
+    print(df[column].value_counts())
+    print("\n")
+
+
+df.shape
+
+df.duplicated().sum().sum()
+
+
+df.isna().sum().sum()
